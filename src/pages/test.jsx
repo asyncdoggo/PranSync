@@ -31,7 +31,6 @@ const PoseDetection = () => {
         // const filteredKeypoints = poses[0].keypoints.filter((keypoint) => keypoint.score > 0.7);
         // poses[0].keypoints = filteredKeypoints;
         // Clear the canvas before drawing new poses
-        console.dir(videoRef.current);
         ctx.drawImage(videoRef.current, 0, 0, videoRef.current.videoWidth, videoRef.current.videoHeight);
         // ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -40,7 +39,7 @@ const PoseDetection = () => {
         if (poses && poses.length > 0) {
             const pose = poses[0]; // Assuming you want to draw the first pose
             const keypoints = pose.keypoints;
-            // drawSkeleton(ctx, pose);
+            drawSkeleton(ctx, pose);
 
 
             for (const keypoint of keypoints) {
@@ -65,24 +64,24 @@ const PoseDetection = () => {
 
         // Define connections as pairs of keypoint indices
         const connections = [
-            [0, 1], // Nose to neck
-            [1, 2], // Neck to right shoulder
-            [2, 3], // Right shoulder to right elbow
-            [3, 4], // Right elbow to right wrist
-            [1, 5], // Neck to left shoulder
-            [5, 6], // Left shoulder to left elbow
-            [6, 7], // Left elbow to left wrist
-            [2, 8], // Right shoulder to right hip
-            [8, 9], // Right hip to right knee
-            [9, 10], // Right knee to right ankle
-            [5, 11], // Left shoulder to left hip
-            [11, 12], // Left hip to left knee
-            [12, 13], // Left knee to left ankle
-            [1, 14], // Neck to right eye
-            [1, 15], // Neck to left eye
-            [14, 16], // Right eye to right ear
-            [15, 17], // Left eye to left ear
+            [4, 2], // right ear to eye
+            [2, 0], // right eye to nose
+            [0, 1], // nose to left eye
+            [1, 3], // left eye to left ear
+            [6, 8], // right shoulder to elbow
+            [8, 10], // right elbow to wrist
+            [5, 7], // left shoulder to elbow
+            [7, 9], // left elbow to wrist
+            [6, 5], // right shoulder to left shoulder
+            [6, 12], // right shoulder to hip
+            [5, 11], // left shoulder to hip
+            [12, 11], // hip to hip
+            [12, 14], // right hip to knee
+            [14, 16], // right knee to ankle
+            [11, 13], // left hip to knee
+            [13, 15] // left knee to ankle
         ];
+
 
         for (const connection of connections) {
             const keypoint1 = keypoints[connection[0]];
@@ -104,27 +103,27 @@ const PoseDetection = () => {
         }
     };
 
+
+    const loadModel = async (detectorConfig) => {
+        await tf.ready();
+        model.current = await poseDetection.createDetector(poseDetection.SupportedModels.PoseNet, detectorConfig);
+    };
+
+    const startVideo = async () => {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        videoRef.current.srcObject = stream;
+
+        videoRef.current.addEventListener('play', async () => {
+            await loadModel(detectorConfig);
+            setInterval(async () => {
+                const poses = await model.current.estimatePoses(videoRef.current, estimationConfig);
+                // Draw the poses on a canvas or use them as needed
+                drawPoses(poses);
+            }, 100); // Adjust interval for performance
+        });
+    };
+
     useEffect(() => {
-        const loadModel = async () => {
-            await tf.ready();
-            model.current = await poseDetection.createDetector(poseDetection.SupportedModels.PoseNet, detectorConfig);
-        };
-
-        const startVideo = async () => {
-            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-            videoRef.current.srcObject = stream;
-
-            videoRef.current.addEventListener('play', async () => {
-                await loadModel();
-                setInterval(async () => {
-                    const poses = await model.current.estimatePoses(videoRef.current, estimationConfig);
-                    // Draw the poses on a canvas or use them as needed
-                    console.log(poses);
-                    drawPoses(poses);
-                }, 100); // Adjust interval for performance
-            });
-        };
-
         startVideo();
     }, []);
 
