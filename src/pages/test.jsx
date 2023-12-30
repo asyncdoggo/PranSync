@@ -2,6 +2,8 @@ import React, { useRef, useEffect } from 'react';
 import * as poseDetection from '@tensorflow-models/pose-detection';
 import * as tf from '@tensorflow/tfjs-core';
 import '@tensorflow/tfjs-backend-webgl';
+import checkMountainYogaPose from './MountaionYogaPose';
+
 
 const PoseDetection = () => {
     const videoRef = useRef(null);
@@ -33,15 +35,17 @@ const PoseDetection = () => {
         // Clear the canvas before drawing new poses
         console.dir(videoRef.current);
         ctx.drawImage(videoRef.current, 0, 0, videoRef.current.videoWidth, videoRef.current.videoHeight);
-        // ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 
 
         if (poses && poses.length > 0) {
             const pose = poses[0]; // Assuming you want to draw the first pose
             const keypoints = pose.keypoints;
-            // drawSkeleton(ctx, pose);
 
+            ctx.drawImage(videoRef.current, 0, 0, videoRef.current.videoWidth, videoRef.current.videoHeight);
+            drawSkeleton(ctx, pose);
+            
 
             for (const keypoint of keypoints) {
                 const { score, x, y } = keypoint;
@@ -57,6 +61,13 @@ const PoseDetection = () => {
                 }
             }
 
+            const mountainYogaPose = checkMountainYogaPose(keypoints);
+            if (mountainYogaPose) {
+                console.log('mountainYogaPose');
+            }
+
+
+
         }
     };
 
@@ -64,24 +75,38 @@ const PoseDetection = () => {
         const keypoints = pose.keypoints;
 
         // Define connections as pairs of keypoint indices
+        // const connections = [
+        //     [0, 1], // Nose to neck
+        //     [1, 2], // Neck to right shoulder
+        //     [2, 3], // Right shoulder to right elbow
+        //     [3, 4], // Right elbow to right wrist
+        //     [1, 5], // Neck to left shoulder
+        //     [5, 6], // Left shoulder to left elbow
+        //     [6, 7], // Left elbow to left wrist
+        //     [2, 8], // Right shoulder to right hip
+        //     [8, 9], // Right hip to right knee
+        //     [9, 10], // Right knee to right ankle
+        //     [5, 11], // Left shoulder to left hip
+        //     [11, 12], // Left hip to left knee
+        //     [12, 13], // Left knee to left ankle
+        //     [1, 14], // Neck to right eye
+        //     [1, 15], // Neck to left eye
+        //     [14, 16], // Right eye to right ear
+        //     [15, 17], // Left eye to left ear
+        // ];
         const connections = [
-            [0, 1], // Nose to neck
-            [1, 2], // Neck to right shoulder
-            [2, 3], // Right shoulder to right elbow
-            [3, 4], // Right elbow to right wrist
-            [1, 5], // Neck to left shoulder
-            [5, 6], // Left shoulder to left elbow
-            [6, 7], // Left elbow to left wrist
-            [2, 8], // Right shoulder to right hip
-            [8, 9], // Right hip to right knee
-            [9, 10], // Right knee to right ankle
+            [5, 7], // Left shoulder to left elbow
+            [7, 9], // Left elbow to left wrist
+            [6, 8], // Right shoulder to right elbow
+            [8, 10], // Right elbow to right wrist
+            [5, 6], // Left shoulder to right shoulder
+            [11, 12], // Left hip to right hip
             [5, 11], // Left shoulder to left hip
-            [11, 12], // Left hip to left knee
-            [12, 13], // Left knee to left ankle
-            [1, 14], // Neck to right eye
-            [1, 15], // Neck to left eye
-            [14, 16], // Right eye to right ear
-            [15, 17], // Left eye to left ear
+            [6, 12], // Right shoulder to right hip
+            [11, 13], // Left hip to left knee
+            [13, 15], // Left knee to left ankle
+            [12, 14], // Right hip to right knee
+            [14, 16], // Right knee to right ankle
         ];
 
         for (const connection of connections) {
@@ -119,7 +144,7 @@ const PoseDetection = () => {
                 setInterval(async () => {
                     const poses = await model.current.estimatePoses(videoRef.current, estimationConfig);
                     // Draw the poses on a canvas or use them as needed
-                    console.log(poses);
+                    // console.log(poses);
                     drawPoses(poses);
                 }, 100); // Adjust interval for performance
             });
