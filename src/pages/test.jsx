@@ -33,7 +33,6 @@ const PoseDetection = () => {
         // const filteredKeypoints = poses[0].keypoints.filter((keypoint) => keypoint.score > 0.7);
         // poses[0].keypoints = filteredKeypoints;
         // Clear the canvas before drawing new poses
-        console.dir(videoRef.current);
         ctx.drawImage(videoRef.current, 0, 0, videoRef.current.videoWidth, videoRef.current.videoHeight);
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -109,6 +108,7 @@ const PoseDetection = () => {
             [14, 16], // Right knee to right ankle
         ];
 
+
         for (const connection of connections) {
             const keypoint1 = keypoints[connection[0]];
             const keypoint2 = keypoints[connection[1]];
@@ -129,15 +129,15 @@ const PoseDetection = () => {
         }
     };
 
-    useEffect(() => {
-        const loadModel = async () => {
-            await tf.ready();
-            model.current = await poseDetection.createDetector(poseDetection.SupportedModels.PoseNet, detectorConfig);
-        };
 
-        const startVideo = async () => {
-            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-            videoRef.current.srcObject = stream;
+    const loadModel = async (detectorConfig) => {
+        await tf.ready();
+        model.current = await poseDetection.createDetector(poseDetection.SupportedModels.PoseNet, detectorConfig);
+    };
+
+    const startVideo = async () => {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        videoRef.current.srcObject = stream;
 
             videoRef.current.addEventListener('play', async () => {
                 await loadModel();
@@ -150,6 +150,7 @@ const PoseDetection = () => {
             });
         };
 
+    useEffect(() => {
         startVideo();
     }, []);
 
