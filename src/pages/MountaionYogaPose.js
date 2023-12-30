@@ -67,6 +67,49 @@
 // }
 
 
+
+// const connections = [
+//     [0, 1], // Nose to neck
+//     [1, 2], // Neck to right shoulder
+//     [2, 3], // Right shoulder to right elbow
+//     [3, 4], // Right elbow to right wrist
+//     [1, 5], // Neck to left shoulder
+//     [5, 6], // Left shoulder to left elbow
+//     [6, 7], // Left elbow to left wrist
+//     [2, 8], // Right shoulder to right hip
+//     [8, 9], // Right hip to right knee
+//     [9, 10], // Right knee to right ankle
+//     [5, 11], // Left shoulder to left hip
+//     [11, 12], // Left hip to left knee
+//     [12, 13], // Left knee to left ankle
+//     [1, 14], // Neck to right eye
+//     [1, 15], // Neck to left eye
+//     [14, 16], // Right eye to right ear
+//     [15, 17], // Left eye to left ear
+// ];
+
+
+const joints = {
+    nose: 0,
+    neck: 1,
+    rightShoulder: 2,
+    rightElbow: 3,
+    rightWrist: 4,
+    leftShoulder: 5,
+    leftElbow: 6,
+    leftWrist: 7,
+    rightHip: 8,
+    rightKnee: 9,
+    rightAnkle: 10,
+    leftHip: 11,
+    leftKnee: 12,
+    leftAnkle: 13,
+    rightEye: 14,
+    leftEye: 15,
+    rightEar: 16,
+    leftEar: 17,
+}
+
 // Define a yoga pose (e.g., "Mountain Pose") in terms of angles and distances between keypoints
 const yogaPoses = {
     'Mountain Pose': {
@@ -94,27 +137,23 @@ const yogaPoses = {
 
 // Calculate the angle between two keypoints in degrees
 function calculateAngle(keypoint1, keypoint2) {
-    console.log(keypoint1, keypoint2)
     return Math.atan2(keypoint2.y - keypoint1.y, keypoint2.x - keypoint1.x) * 180 / Math.PI;
 
 }
 
 // Calculate the distance between two keypoints
 function calculateDistance(keypoint1, keypoint2) {
-    console.log(keypoint1, keypoint2)
-    // console.log("Distance is "+Math.sqrt(Math.pow(keypoint2.x - keypoint1.x, 2) + Math.pow(keypoint2.y - keypoint1.y, 2)))
     return Math.sqrt(Math.pow(keypoint2.x - keypoint1.x, 2) + Math.pow(keypoint2.y - keypoint1.y, 2));
 }
 
 // Check if the detected pose matches a yoga pose
 export default function checkMountainYogaPose(pose) {
-    console.log(pose)
     for (const yogaPose in yogaPoses) {
         let isMatch = true;
 
         for (const keypoints in yogaPoses[yogaPose].angles) {
             const [keypoint1, keypoint2] = keypoints.split('-');
-            const angle = calculateAngle(pose[keypoint1], pose[keypoint2]);
+            const angle = calculateAngle(pose[joints[keypoint1]], pose[joints[keypoint2]]);
 
             if (Math.abs(angle - yogaPoses[yogaPose].angles[keypoints]) > 10) { // Allow a margin of error of 10 degrees
                 isMatch = false;
@@ -124,8 +163,7 @@ export default function checkMountainYogaPose(pose) {
 
         for (const keypoints in yogaPoses[yogaPose].distances) {
             const [keypoint1, keypoint2] = keypoints.split('-');
-            console.log("Atharv "+pose[keypoint1], pose[keypoint2])
-            const distance = calculateDistance(pose[keypoint1], pose[keypoint2]);
+            const distance = calculateDistance(pose[joints[keypoint1]], pose[joints[keypoint1]]);
 
             if (Math.abs(distance - yogaPoses[yogaPose].distances[keypoints]) > 10) { // Allow a margin of error of 10 pixels
                 isMatch = false;
