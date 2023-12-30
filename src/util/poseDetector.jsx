@@ -129,18 +129,18 @@ export default class PoseDetector {
         const aspectRatio = originalWidth / originalHeight;
 
         if (constWidth && constHeight) {
-            return { width: originalWidth, height: originalHeight, aspectRatio: aspectRatio };
+            return { width: originalWidth, height: originalHeight };
         }
 
         if (constWidth) {
             const scaledHeight = constWidth / aspectRatio;
-            return { width: constWidth, height: scaledHeight, aspectRatio: aspectRatio };
+            return { width: constWidth, height: scaledHeight };
         }
 
         if (constHeight) {
             const scaledWidth = constHeight * aspectRatio;
-            return { width: scaledWidth, height: constHeight, aspectRatio: aspectRatio };
+            return { width: scaledWidth, height: constHeight };
         }
-        return { width: originalWidth, height: originalHeight, aspectRatio: aspectRatio };
+        return { width: originalWidth, height: originalHeight };
     }
 }

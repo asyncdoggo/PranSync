@@ -16,6 +16,14 @@ const PoseDetection = () => {
 
     const poseDetector = useRef(null);
 
+    const constraints = {
+        video:
+            navigator.userAgentData.mobile ?
+                {
+                    facingMode: { exact: "environment" }
+                }
+                : true
+    }
 
     const videoChange = (e) => {
         setVideo(e.target.files[0]);
@@ -44,20 +52,23 @@ const PoseDetection = () => {
         });
     }
 
-    async function startVideo(video) {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+    async function startVideo() {
+        const video = videoRef.current;
+        const stream = await navigator.mediaDevices.getUserMedia(constraints);
         video.srcObject = stream;
         detectPoseFromVideo(video);
     }
 
     useEffect(() => {
-        // startVideo(videoRef.current);
+        // startVideo();
     }, []);
 
     return (
         <>
             <video ref={videoRef} width="640" height="480" autoPlay playsInline controls />
             <canvas ref={canvasRef} ></canvas>
+
+            <button onClick={startVideo}>Use camera</button>
 
             <input type='file'
                 accept='video/*'
