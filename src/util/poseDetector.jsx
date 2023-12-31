@@ -73,12 +73,7 @@ export default class PoseDetector {
         frame.dispose();
         const poses = await this.model.estimatePoses(video);
         resizedFrame.dispose();
-        console.log(poses)
         return poses;
-
-
-        frame.dispose();
-        // return await this.model.estimatePoses(frame, this.estimationConfig);
     }
 
     unloadModel() {
@@ -106,13 +101,11 @@ export default class PoseDetector {
 
 
     scaleCoordinates(originalX, originalY) {
-        const scaleX = this.scaledWidth / this.canvas.width;
-        const scaleY = this.scaledHeight / this.canvas.height;
+        const scaleX = this.scaledWidth / this.videoWidth;
+        const scaleY = this.scaledHeight / this.videoHeight;
 
-        const scalefactor_y = this.canvas.height / this.videoHeight;
-        const scalefactor_x = this.canvas.width / this.videoWidth;
-        const scaledX = originalX * scaleX * scalefactor_x * this.canvas_scale;
-        const scaledY = originalY * scaleY * scalefactor_y * this.canvas_scale;
+        const scaledX = originalX * scaleX * this.canvas_scale;
+        const scaledY = originalY * scaleY * this.canvas_scale;
         return { x: scaledX, y: scaledY };
     }
 
