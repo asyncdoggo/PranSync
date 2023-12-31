@@ -110,30 +110,89 @@ const joints = {
     leftEar: 17,
 }
 
-// Define a yoga pose (e.g., "Mountain Pose") in terms of angles and distances between keypoints
+// Defining a yoga pose 
 const yogaPoses = {
     'Mountain Pose': {
         'angles': {
-            'leftElbow-rightElbow': 180, // The angle between the left elbow and the right elbow should be 180 degrees
-            // Add more angles as needed
+            'leftElbow-rightElbow': 180,
         },
         'distances': {
-            'leftElbow-rightElbow': 100, // The distance between the left elbow and the right elbow should be 100 pixels
-            // Add more distances as needed
+            'leftElbow-rightElbow': 100,
         },
     },
     'Tree Pose': {
         'angles': {
-            'leftAnkle-rightHip': 90, // The angle between the left ankle and the right hip should be 90 degrees
-            'leftWrist-rightWrist': 180, // The angle between the left wrist and the right wrist should be 180 degrees
+            'leftAnkle-rightHip': 90,
+            'leftWrist-rightWrist': 180,
         },
         'distances': {
-            'leftAnkle-rightHip': 50, // The distance between the left ankle and the right hip should be 50 pixels
-            'leftWrist-rightWrist': 100, // The distance between the left wrist and the right wrist should be 100 pixels
+            'leftAnkle-rightHip': 50,
+            'leftWrist-rightWrist': 100,
+        },
+    },
+    'Downward Dog': {
+        'angles': {
+            'leftHand-rightFoot': 120,
+            'rightHand-leftFoot': 120,
+        },
+        'distances': {
+            'leftHand-rightFoot': 80,
+            'rightHand-leftFoot': 80,
+        },
+    },
+    'Warrior Pose': {
+        'angles': {
+            'leftKnee-leftAnkle': 90,
+            'rightKnee-rightAnkle': 90,
+        },
+        'distances': {
+            'leftKnee-leftAnkle': 70,
+            'rightKnee-rightAnkle': 70,
+        },
+    },
+    'Child\'s Pose': {
+        'angles': {
+            'head-hands': 90,
+        },
+        'distances': {
+            'head-hands': 40,
+        },
+    },
+    'Cobra Pose': {
+        'angles': {
+            'head-upperBody': 120,
+        },
+        'distances': {
+            'head-upperBody': 60,
+        },
+    },
+    'Bridge Pose': {
+        'angles': {
+            'knees-hips': 120,
+        },
+        'distances': {
+            'knees-hips': 80,
+        },
+    },
+    'Chair Pose': {
+        'angles': {
+            'knees-shoulders': 90,
+        },
+        'distances': {
+            'knees-shoulders': 60,
+        },
+    },
+    'Plank Pose': {
+        'angles': {
+            'shoulders-hips': 180,
+        },
+        'distances': {
+            'shoulders-hips': 70,
         },
     },
     // Add more poses as needed
 };
+
 
 // Calculate the angle between two keypoints in degrees
 function calculateAngle(keypoint1, keypoint2) {
