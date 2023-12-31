@@ -33,22 +33,28 @@ const PoseDetection = () => {
         // videoRef.current.play();
     }
 
+
     async function detectPoseFromVideo(video) {
-        video.addEventListener('play', async () => {
-            poseDetector.current = new PoseDetector(canvasRef, video.videoWidth, video.videoHeight);
-            await poseDetector.current.loadModel();
-            setInterval(async () => {
-                const poses = await poseDetector.current.getPose(video)
-                poseDetector.current.drawPoses(poses, video);
-                poseDetector.current.drawSkeleton(poses);
-                if (poses && poses.length > 0) {
-                    const pose = poses[0]; // Assuming you want to draw the first pose
-                    const mountainYogaPose = checkMountainYogaPose(pose.keypoints);
-                    if (mountainYogaPose) {
-                        console.log('mountainYogaPose');
+        video.addEventListener('loadeddata', async () => {
+            poseDetector.current.setVideoData(video.videoWidth, video.videoHeight)
+            console.log("video width:", video.videoWidth, "video height:", video.videoHeight);
+            if (video.readyState >= 3) {
+
+                setInterval(async () => {
+                    // poseDetector.current.ctx.drawImage(video, 0, 0, poseDetector.current.canvas.width, poseDetector.current.canvas.height);
+                    const poses = await poseDetector.current.getPose(video)
+
+                    if (poses && poses.length > 0) {
+                        poseDetector.current.drawPoses(poses, video);
+                        poseDetector.current.drawSkeleton(poses);
+                        const pose = poses[0]; // Assuming you want to draw the first pose
+                        const mountainYogaPose = checkMountainYogaPose(pose.keypoints);
+                        if (mountainYogaPose) {
+                            console.log('mountainYogaPose');
+                        }
                     }
-                }
-            }, 100); // Adjust interval for performance
+                }, 100); // Adjust interval for performanc
+            }
         });
     }
 
@@ -60,7 +66,17 @@ const PoseDetection = () => {
     }
 
     useEffect(() => {
-        // startVideo();
+
+        const loadModel = async () => {
+            if (!poseDetector.current) {
+                poseDetector.current = new PoseDetector(canvasRef);
+                console.log("loading model")
+                await poseDetector.current.loadModel();
+                console.log("model loaded")
+            }
+        }
+        loadModel();
+
     }, []);
 
     return (
