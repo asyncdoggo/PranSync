@@ -68,11 +68,11 @@ export default class PoseDetector {
 
     async getPose(video) {
         //scale video frame
-        // const frame = tf.browser.fromPixels(video)
-        // const resizedFrame = tf.image.resizeBilinear(frame, [this.scaledWidth, this.scaledHeight]);
-        // frame.dispose();
+        const frame = tf.browser.fromPixels(video)
+        const resizedFrame = tf.image.resizeBilinear(frame, [this.scaledWidth, this.scaledHeight]);
+        frame.dispose();
         const poses = await this.model.estimatePoses(video);
-        // resizedFrame.dispose();
+        resizedFrame.dispose();
         console.log(poses)
         return poses;
 
@@ -87,7 +87,7 @@ export default class PoseDetector {
     }
 
 
-    setVideoData(videoWidth, videoHeight) { 
+    setVideoData(videoWidth, videoHeight) {
         const { width, height } = this.scaleDimensions(videoWidth, videoHeight, 240);
 
         console.log("scaled dims:", width, height);
@@ -121,27 +121,31 @@ export default class PoseDetector {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.drawImage(video, 0, 0, this.canvas.width, this.canvas.height);
 
-        if (poses && poses.length > 0) {
-            const pose = poses[0]; // Assuming you want to draw the first pose
-            const keypoints = pose.keypoints;
+        if (!poses || poses.length === 0) {
+            return;
+        }
+        const pose = poses[0]; // Assuming you want to draw the first pose
+        const keypoints = pose.keypoints;
 
-            for (const keypoint of keypoints) {
-                const { score, x, y } = keypoint;
+        for (const keypoint of keypoints) {
+            const { score, x, y } = keypoint;
 
-                // Only draw keypoints with high confidence scores
-                if (score > 0.5) {
-                    const { x: x1, y: y1 } = this.scaleCoordinates(x, y);
+            // Only draw keypoints with high confidence scores
+            if (score > 0.5) {
+                const { x: x1, y: y1 } = this.scaleCoordinates(x, y);
 
-                    // Draw a circle for each keypoint
-                    this.ctx.beginPath();
-                    this.ctx.arc(x1, y1, 5, 0, 2 * Math.PI);
-                    this.ctx.fillStyle = 'red'; // Adjust color as needed
-                    this.ctx.fill();
-                }
+                // Draw a circle for each keypoint
+                this.ctx.beginPath();
+                this.ctx.arc(x1, y1, 5, 0, 2 * Math.PI);
+                this.ctx.fillStyle = 'red'; // Adjust color as needed
+                this.ctx.fill();
             }
         }
     }
     drawSkeleton(pose) {
+
+        if (!pose || pose.length === 0) return;
+
         const keypoints = pose[0].keypoints;
 
         // Define connections as pairs of keypoint indices

@@ -44,14 +44,12 @@ const PoseDetection = () => {
                     // poseDetector.current.ctx.drawImage(video, 0, 0, poseDetector.current.canvas.width, poseDetector.current.canvas.height);
                     const poses = await poseDetector.current.getPose(video)
 
-                    if (poses && poses.length > 0) {
-                        poseDetector.current.drawPoses(poses, video);
-                        poseDetector.current.drawSkeleton(poses);
-                        const pose = poses[0]; // Assuming you want to draw the first pose
-                        const mountainYogaPose = checkMountainYogaPose(pose.keypoints);
-                        if (mountainYogaPose) {
-                            console.log('mountainYogaPose');
-                        }
+                    poseDetector.current.drawPoses(poses, video);
+                    poseDetector.current.drawSkeleton(poses);
+                    const pose = poses[0]; // Assuming you want to draw the first pose
+                    const mountainYogaPose = checkMountainYogaPose(pose.keypoints);
+                    if (mountainYogaPose) {
+                        console.log('mountainYogaPose');
                     }
                 }, 100); // Adjust interval for performanc
             }
