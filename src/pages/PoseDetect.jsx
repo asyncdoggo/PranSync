@@ -49,7 +49,7 @@ const PoseDetection = () => {
                     //         console.log('mountainYogaPose');
                     //     }
                     // }
-                }, 17);
+                }, 40);
             }
         });
     }

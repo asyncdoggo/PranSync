@@ -8,34 +8,9 @@ import checkMountainYogaPose from './poses';
 export default class PoseDetector {
     constructor(canvasRef) {
 
-        // this.video = videoRef.current;
         this.canvas = canvasRef.current;
         this.model = null;
-
-        // const { width, height } = this.scaleDimensions(videoWidth, videoHeight, 240);
-
-        // console.log("scaled dims:", width, height);
-
-        // this.scaledWidth = width;
-        // this.scaledHeight = height;
-
-        // this.videoWidth = videoWidth;
-        // this.videoHeight = videoHeight;
-
-        // this.canvas_scale = 2;
-
-        // this.canvas.width = this.scaledWidth * this.canvas_scale;
-        // this.canvas.height = this.scaledHeight * this.canvas_scale;
-
         this.ctx = this.canvas.getContext('2d');
-
-        // // this.detectorConfig = {
-        // //     architecture: 'MobileNetV2',
-        // //     outputStride: 16,
-        // //     inputResolution: { width: this.scaledWidth, height: this.scaledHeight },
-        // //     multiplier: 0.5
-        // // };
-
 
         this.detectorConfig = {
             modelType: poseDetection.movenet.modelType.SINGLEPOSE_LIGHTNING,
@@ -83,7 +58,9 @@ export default class PoseDetector {
 
 
     setVideoData(videoWidth, videoHeight) {
-        const { width, height } = this.scaleDimensions(videoWidth, videoHeight, 240);
+        // this.resetCanvas()
+
+        const { width, height } = this.scaleDimensions(videoWidth, videoHeight, 512);
 
         console.log("scaled dims:", width, height);
 
@@ -93,19 +70,32 @@ export default class PoseDetector {
         this.videoWidth = videoWidth;
         this.videoHeight = videoHeight;
 
-        this.canvas_scale = 2;
+        // this.canvas_scale = 2;
 
-        this.canvas.width = this.scaledWidth * this.canvas_scale;
-        this.canvas.height = this.scaledHeight * this.canvas_scale;
+        const { width: canvasWidth, height: canvasHeight } = this.scaleDimensions(videoWidth, videoHeight, this.scaledWidth)
+
+        this.canvas.width = canvasWidth;
+        this.canvas.height = canvasHeight;
+
+        this.canvas_scale_x = this.canvas.width / this.scaledWidth;
+        this.canvas_scale_y = this.canvas.height / this.scaledHeight;
+
     }
 
+    resetCanvas() {
+        this.ctx = null
+        var new_element = this.canvas.cloneNode(true);
+        this.canvas.parentNode.replaceChild(new_element, this.canvas);
+        this.canvas = new_element;
+        this.ctx = this.canvas.getContext('2d');
+    }
 
     scaleCoordinates(originalX, originalY) {
         const scaleX = this.scaledWidth / this.videoWidth;
         const scaleY = this.scaledHeight / this.videoHeight;
 
-        const scaledX = originalX * scaleX * this.canvas_scale;
-        const scaledY = originalY * scaleY * this.canvas_scale;
+        const scaledX = originalX * scaleX * this.canvas_scale_x;
+        const scaledY = originalY * scaleY * this.canvas_scale_y;
         return { x: scaledX, y: scaledY };
     }
 
@@ -181,7 +171,7 @@ export default class PoseDetector {
         }
     }
 
-    scaleDimensions(originalWidth, originalHeight, constWidth = 512, constHeight = null) {
+    scaleDimensions(originalWidth, originalHeight, constWidth = null, constHeight = null) {
 
         if (originalHeight > originalWidth) {
             constHeight = constWidth;
@@ -191,7 +181,7 @@ export default class PoseDetector {
         const aspectRatio = originalWidth / originalHeight;
 
         if (constWidth && constHeight) {
-            return { width: originalWidth, height: originalHeight };
+            return { width: constWidth, height: constHeight };
         }
 
         if (constWidth) {
