@@ -1,26 +1,47 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
 import PoseDetect from './pages/PoseDetect'
+import { Outlet, RouterProvider, createBrowserRouter } from 'react-router-dom'
+import Header from './components/header'
+import Footer from './components/footer'
+import Landing from './pages/Landing'
+import Page_Not_Found from './pages/404'
+import './index.css'
 
+const Layout = () => {
+  return (
+    <>
+      <Header />
+      <Outlet />
+      <Footer />
+    </>
+  )
+}
+
+
+const router = createBrowserRouter([
+  {
+    element: <Layout />,
+    children: [
+      {
+        path: "/",
+        element: <Landing />,
+      },
+      {
+        path: "/pose",
+        element: <PoseDetect />,
+      }
+    ],
+  },
+  {
+    path: "/*",
+    element: <Page_Not_Found />,
+  },
+]);
 function App() {
-  const [count, setCount] = useState(0)
+
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <PoseDetect />
-      </div>
+      <RouterProvider router={router} />
     </>
   )
 }

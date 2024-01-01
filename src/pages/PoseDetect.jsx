@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import * as poseDetection from '@tensorflow-models/pose-detection';
 import * as tf from '@tensorflow/tfjs-core';
 import '@tensorflow/tfjs-backend-webgl';
-import checkMountainYogaPose from '../util/MountaionYogaPose';
+import checkMountainYogaPose from '../util/poses';
 import PoseDetector from '../util/poseDetector';
 
 
@@ -10,9 +10,9 @@ import PoseDetector from '../util/poseDetector';
 const PoseDetection = () => {
 
     const [video, setVideo] = useState(null);
-    console.log(video);
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
+    const [loaded, setLoaded] = useState(false);
 
     const poseDetector = useRef(null);
 
@@ -29,8 +29,6 @@ const PoseDetection = () => {
         setVideo(e.target.files[0]);
         videoRef.current.src = URL.createObjectURL(e.target.files[0]);
         detectPoseFromVideo(videoRef.current);
-        console.dir(videoRef.current)
-        // videoRef.current.play();
     }
 
 
@@ -41,17 +39,17 @@ const PoseDetection = () => {
             if (video.readyState >= 3) {
 
                 setInterval(async () => {
-                    // poseDetector.current.ctx.drawImage(video, 0, 0, poseDetector.current.canvas.width, poseDetector.current.canvas.height);
                     const poses = await poseDetector.current.getPose(video)
-
                     poseDetector.current.drawPoses(poses, video);
                     poseDetector.current.drawSkeleton(poses);
-                    const pose = poses[0]; // Assuming you want to draw the first pose
-                    const mountainYogaPose = checkMountainYogaPose(pose.keypoints);
-                    if (mountainYogaPose) {
-                        console.log('mountainYogaPose');
-                    }
-                }, 100); // Adjust interval for performanc
+                    const pose = poses[0];
+                    // if (pose) {
+                    //     const mountainYogaPose = checkMountainYogaPose(pose.keypoints);
+                    //     if (mountainYogaPose) {
+                    //         console.log('mountainYogaPose');
+                    //     }
+                    // }
+                }, 17);
             }
         });
     }
@@ -72,23 +70,30 @@ const PoseDetection = () => {
                 await poseDetector.current.loadModel();
                 console.log("model loaded")
             }
+            setLoaded(true);
         }
         loadModel();
 
     }, []);
 
     return (
-        <>
-            <video ref={videoRef} width="640" height="480" autoPlay playsInline controls />
+        <div>
+            {
+                loaded ?
+                    <p>
+                        <video ref={videoRef} width="640" height="480" autoPlay playsInline controls />
+
+                        <button onClick={startVideo} className='w-full '>Use camera</button>
+
+                        <input type='file'
+                            accept='video/*'
+                            onChange={videoChange}
+                        /></p> :
+                    <p>Loading model</p>
+            }
+
             <canvas ref={canvasRef} ></canvas>
-
-            <button onClick={startVideo}>Use camera</button>
-
-            <input type='file'
-                accept='video/*'
-                onChange={videoChange}
-            />
-        </>
+        </div>
 
     );
 };

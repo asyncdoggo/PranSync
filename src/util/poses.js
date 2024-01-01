@@ -209,7 +209,7 @@ function calculateDistance(keypoint1, keypoint2) {
 export default function checkMountainYogaPose(pose) {
     for (const yogaPose in yogaPoses) {
         let isMatch = true;
-
+        console.log(pose)
         for (const keypoints in yogaPoses[yogaPose].angles) {
             const [keypoint1, keypoint2] = keypoints.split('-');
             const angle = calculateAngle(pose[joints[keypoint1]], pose[joints[keypoint2]]);
