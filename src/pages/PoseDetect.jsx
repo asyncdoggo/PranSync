@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import * as poseDetection from '@tensorflow-models/pose-detection';
 import * as tf from '@tensorflow/tfjs-core';
 import '@tensorflow/tfjs-backend-webgl';
-import checkMountainYogaPose from '../util/poses';
+import checkMountainYogaPose, { isMountainPose } from '../util/poses';
 import PoseDetector from '../util/poseDetector';
 
 
@@ -39,16 +39,18 @@ const PoseDetection = () => {
             if (video.readyState >= 3) {
 
                 setInterval(async () => {
+                    if (video.paused || video.ended) return;
                     const poses = await poseDetector.current.getPose(video)
                     poseDetector.current.drawPoses(poses, video);
                     poseDetector.current.drawSkeleton(poses);
                     const pose = poses[0];
-                    // if (pose) {
-                    //     const mountainYogaPose = checkMountainYogaPose(pose.keypoints);
-                    //     if (mountainYogaPose) {
-                    //         console.log('mountainYogaPose');
-                    //     }
-                    // }
+                    if (pose) {
+                        const mountainYogaPose = isMountainPose(pose.keypoints);
+                        if (mountainYogaPose) {
+                            console.log('mountainYogaPose');
+                            console.log(pose.keypoints);
+                        }
+                    }
                 }, 40);
             }
         });
@@ -76,6 +78,11 @@ const PoseDetection = () => {
 
     }, []);
 
+
+
+
+    const imageRef = useRef(null);
+
     return (
         <div>
             {
@@ -93,6 +100,42 @@ const PoseDetection = () => {
             }
 
             <canvas ref={canvasRef} ></canvas>
+
+
+
+
+
+
+
+
+
+            <div className='TEST'>
+                <input type='file'
+                    accept='image/*'
+                    onChange={(e) => {
+                        imageRef.current.src = URL.createObjectURL(e.target.files[0]);
+                        imageRef.current.onload = async () => {
+                            console.log("test");
+                            poseDetector.current.setVideoData(imageRef.current.width, imageRef.current.height)
+                            const pose = await poseDetector.current.getPose(imageRef.current)
+                            console.log(pose);
+                            poseDetector.current.drawPoses(pose, imageRef.current);
+                            poseDetector.current.drawSkeleton(pose);
+                            const mountainYogaPose = isMountainPose(pose[0].keypoints, poseDetector.current.canvas_scale_x, poseDetector.current.canvas_scale_y);
+                            console.log(mountainYogaPose);
+                        }
+                    }}
+
+
+                />
+                <img src='' width="480" height="320" ref={imageRef} />
+            </div>
+
+
+
+
+
+
         </div>
 
     );

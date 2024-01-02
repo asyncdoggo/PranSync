@@ -60,7 +60,10 @@ export default class PoseDetector {
     setVideoData(videoWidth, videoHeight) {
         // this.resetCanvas()
 
-        const { width, height } = this.scaleDimensions(videoWidth, videoHeight, 512);
+        let { width, height } = this.scaleDimensions(videoWidth, videoHeight, 512);
+
+        width = Math.floor(width);
+        height = Math.floor(height);
 
         console.log("scaled dims:", width, height);
 
@@ -72,7 +75,11 @@ export default class PoseDetector {
 
         // this.canvas_scale = 2;
 
-        const { width: canvasWidth, height: canvasHeight } = this.scaleDimensions(videoWidth, videoHeight, this.scaledWidth)
+        let { width: canvasWidth, height: canvasHeight } = this.scaleDimensions(videoWidth, videoHeight, this.scaledWidth)
+
+        canvasWidth = Math.floor(canvasWidth);
+        canvasHeight = Math.floor(canvasHeight);
+
 
         this.canvas.width = canvasWidth;
         this.canvas.height = canvasHeight;

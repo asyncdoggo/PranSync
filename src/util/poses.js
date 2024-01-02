@@ -90,24 +90,23 @@
 
 
 const joints = {
-    nose: 0,
-    neck: 1,
-    rightShoulder: 2,
-    rightElbow: 3,
-    rightWrist: 4,
-    leftShoulder: 5,
-    leftElbow: 6,
-    leftWrist: 7,
-    rightHip: 8,
-    rightKnee: 9,
-    rightAnkle: 10,
-    leftHip: 11,
-    leftKnee: 12,
-    leftAnkle: 13,
-    rightEye: 14,
-    leftEye: 15,
-    rightEar: 16,
-    leftEar: 17,
+    "nose": "0",
+    "left_eye": "1",
+    "right_eye": "2",
+    "left_ear": "3",
+    "right_ear": "4",
+    "left_shoulder": "5",
+    "right_shoulder": "6",
+    "left_elbow": "7",
+    "right_elbow": "8",
+    "left_wrist": "9",
+    "right_wrist": "10",
+    "left_hip": "11",
+    "right_hip": "12",
+    "left_knee": "13",
+    "right_knee": "14",
+    "left_ankle": "15",
+    "right_ankle": "16"
 }
 
 // Defining a yoga pose 
@@ -197,11 +196,10 @@ const yogaPoses = {
 // Calculate the angle between two keypoints in degrees
 function calculateAngle(keypoint1, keypoint2) {
     return Math.atan2(keypoint2.y - keypoint1.y, keypoint2.x - keypoint1.x) * 180 / Math.PI;
-
 }
 
 // Calculate the distance between two keypoints
-function calculateDistance(keypoint1, keypoint2) {
+function calculateDistance(keypoint1, keypoint2, scaleX = 1, scaleY = 1) {
     return Math.sqrt(Math.pow(keypoint2.x - keypoint1.x, 2) + Math.pow(keypoint2.y - keypoint1.y, 2));
 }
 
@@ -222,7 +220,7 @@ export default function checkMountainYogaPose(pose) {
 
         for (const keypoints in yogaPoses[yogaPose].distances) {
             const [keypoint1, keypoint2] = keypoints.split('-');
-            const distance = calculateDistance(pose[joints[keypoint1]], pose[joints[keypoint1]]);
+            const distance = calculateDistance(pose[joints[keypoint1]], pose[joints[keypoint2]]);
 
             if (Math.abs(distance - yogaPoses[yogaPose].distances[keypoints]) > 10) { // Allow a margin of error of 10 pixels
                 isMatch = false;
@@ -236,4 +234,30 @@ export default function checkMountainYogaPose(pose) {
     }
 
     return null;
+}
+
+const mountainPoseGuide = {
+    'angles': {
+        'left_elbow-right_elbow': 180,
+
+    },
+}
+
+
+export const isMountainPose = (pose) => {
+    let isMatch = true;
+
+    for (const keypoints in mountainPoseGuide.angles) {
+        const [keypoint1, keypoint2] = keypoints.split('-');
+        const angle = calculateAngle(pose[joints[keypoint1]], pose[joints[keypoint2]]);
+        console.log("angle", angle)
+
+
+        if (Math.abs(Math.abs(angle) - mountainPoseGuide.angles[keypoints]) > 10) { // Allow a margin of error of 10 degrees
+            isMatch = false;
+            break;
+        }
+    }
+
+    return isMatch;
 }
