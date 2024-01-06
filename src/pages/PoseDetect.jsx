@@ -2,8 +2,8 @@ import React, { useRef, useEffect, useState } from 'react';
 import * as poseDetection from '@tensorflow-models/pose-detection';
 import * as tf from '@tensorflow/tfjs-core';
 import '@tensorflow/tfjs-backend-webgl';
-import checkMountainYogaPose, { isMountainPose } from '../util/poses';
 import PoseDetector from '../util/poseDetector';
+import checkYogaPose, { calculateAngleBetweenPairs } from '../util/poses';
 
 
 
@@ -45,11 +45,8 @@ const PoseDetection = () => {
                     poseDetector.current.drawSkeleton(poses);
                     const pose = poses[0];
                     if (pose) {
-                        const mountainYogaPose = isMountainPose(pose.keypoints);
-                        if (mountainYogaPose) {
-                            console.log('mountainYogaPose');
-                            console.log(pose.keypoints);
-                        }
+                        const userpose = checkYogaPose(pose.keypoints, "mountain");
+                        console.log(userpose)
                     }
                 }, 40);
             }
@@ -118,11 +115,13 @@ const PoseDetection = () => {
                             console.log("test");
                             poseDetector.current.setVideoData(imageRef.current.width, imageRef.current.height)
                             const pose = await poseDetector.current.getPose(imageRef.current)
-                            console.log(pose);
                             poseDetector.current.drawPoses(pose, imageRef.current);
                             poseDetector.current.drawSkeleton(pose);
-                            const mountainYogaPose = isMountainPose(pose[0].keypoints, poseDetector.current.canvas_scale_x, poseDetector.current.canvas_scale_y);
-                            console.log(mountainYogaPose);
+                            const angles = calculateAngleBetweenPairs(pose)
+                            console.log(angles);
+                            const userpose = checkYogaPose(pose[0].keypoints, "mountain");
+                            console.log(userpose)
+
                         }
                     }}
 
