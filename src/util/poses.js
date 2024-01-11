@@ -44,26 +44,6 @@ const yogaPoses = {
         'right_knee-right_ankle': 90
 
     },
-    'tree': {
-        'left_shoulder-left_elbow': 66,
-        'left_elbow-left_wrist': -164,
-        'right_shoulder-right_elbow': 124,
-        'right_elbow-right_wrist': -9,
-        'left_hip-left_knee': 94,
-        'right_hip-right_knee': 153,
-        'left_knee-left_ankle': 100,
-        'right_knee-right_ankle': 1
-    },
-    'triangle pose': {
-        "left_shoulder-left_elbow": 80.62974461414443,
-        "left_elbow-left_wrist": 62.58738270953999,
-        "right_shoulder-right_elbow": -100.47778020896679,
-        "right_elbow-right_wrist": -82.32240103586281,
-        "left_hip-left_knee": 55.5375037021053,
-        "right_hip-right_knee": 118.24097308752138,
-        "left_knee-left_ankle": 57.74971886029495,
-        "right_knee-right_ankle": 113.52880934566475,
-    }, 
     'warrior pose': {
         "left_shoulder-left_elbow": 156.68071949091066,
         "left_elbow-left_wrist": 161.34216897848933,
@@ -84,6 +64,16 @@ const yogaPoses = {
         "left_knee-left_ankle": 92.1457243416118,
         "right_knee-right_ankle": 83.39897490494849,
     }, 
+    'triangle pose': {
+        "left_shoulder-left_elbow": 80.62974461414443,
+        "left_elbow-left_wrist": 62.58738270953999,
+        "right_shoulder-right_elbow": -100.47778020896679,
+        "right_elbow-right_wrist": -82.32240103586281,
+        "left_hip-left_knee": 55.5375037021053,
+        "right_hip-right_knee": 118.24097308752138,
+        "left_knee-left_ankle": 57.74971886029495,
+        "right_knee-right_ankle": 113.52880934566475,
+    }, 
     'tree-pose': {
         "left_shoulder-left_elbow": -94.77946584514672,
         "left_elbow-left_wrist": -105.21574323964435,
@@ -93,6 +83,26 @@ const yogaPoses = {
         "right_hip-right_knee": 132.17892775583175,
         "left_knee-left_ankle": -96.42861142144108,
         "right_knee-right_ankle": -15.951258375217307,
+    },
+    'tree': {
+        'left_shoulder-left_elbow': 66,
+        'left_elbow-left_wrist': -164,
+        'right_shoulder-right_elbow': 124,
+        'right_elbow-right_wrist': -9,
+        'left_hip-left_knee': 94,
+        'right_hip-right_knee': 153,
+        'left_knee-left_ankle': 100,
+        'right_knee-right_ankle': 1
+    },
+    'peaceful-warrior-pose': {
+        "left_shoulder-left_elbow": 78.4084361490467,
+        "left_elbow-left_wrist": 74.97439910261855,
+        "right_shoulder-right_elbow": -56.686546276412365,
+        "right_elbow-right_wrist": -57.86869804308677,
+        "left_hip-left_knee": 41.27041820208564,
+        "right_hip-right_knee": 154.93188657466163,
+        "left_knee-left_ankle": 43.05073063708958,
+        "right_knee-right_ankle": 94.26399719288383,
     },
     'triangle-twist': {
         "left_shoulder-left_elbow": 80.6298232701816,
@@ -134,7 +144,6 @@ const yogaPoses = {
         "left_knee-left_ankle": 67.17287091549557,
         "right_knee-right_ankle": 67.23206453321264,
     }, 
-    
 }
 
 // 'Downward Dog': {
