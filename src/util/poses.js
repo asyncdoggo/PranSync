@@ -44,12 +44,20 @@ const yogaPoses = {
         'right_knee-right_ankle': 90
 
     },
+    'tree': {
+        'left_shoulder-left_elbow': 66,
+        'left_elbow-left_wrist': -164,
+        'right_shoulder-right_elbow': 124,
+        'right_elbow-right_wrist': -9,
+        'left_hip-left_knee': 94,
+        'right_hip-right_knee': 153,
+        'left_knee-left_ankle': 100,
+        'right_knee-right_ankle': 1
+    },
 }
-// 'Tree Pose': {
 
-// },
 // 'Downward Dog': {
-
+    // gives inaccurate pose
 // },
 // 'Warrior Pose': {
 

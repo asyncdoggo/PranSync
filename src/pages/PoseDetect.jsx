@@ -1,20 +1,19 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, createContext, useContext } from 'react';
 import * as poseDetection from '@tensorflow-models/pose-detection';
 import * as tf from '@tensorflow/tfjs-core';
 import '@tensorflow/tfjs-backend-webgl';
 import PoseDetector from '../util/poseDetector';
 import checkYogaPose, { calculateAngleBetweenPairs } from '../util/poses';
+import { PoseDetectorContext } from '../context/poseDetectorContext';
 
 
 
 const PoseDetection = () => {
+    const { poseDetector, loaded } = useContext(PoseDetectorContext);
 
     const [video, setVideo] = useState(null);
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
-    const [loaded, setLoaded] = useState(false);
-
-    const poseDetector = useRef(null);
 
     const constraints = {
         video:
@@ -34,7 +33,8 @@ const PoseDetection = () => {
 
     async function detectPoseFromVideo(video) {
         video.addEventListener('loadeddata', async () => {
-            poseDetector.current.setVideoData(video.videoWidth, video.videoHeight)
+
+            poseDetector.current.setVideoData(video.videoWidth, video.videoHeight, canvasRef)
             console.log("video width:", video.videoWidth, "video height:", video.videoHeight);
             if (video.readyState >= 3) {
 
@@ -60,23 +60,6 @@ const PoseDetection = () => {
         detectPoseFromVideo(video);
     }
 
-    useEffect(() => {
-
-        const loadModel = async () => {
-            if (!poseDetector.current) {
-                poseDetector.current = new PoseDetector(canvasRef);
-                console.log("loading model")
-                await poseDetector.current.loadModel();
-                console.log("model loaded")
-            }
-            setLoaded(true);
-        }
-        loadModel();
-
-    }, []);
-
-
-
 
     const imageRef = useRef(null);
 
@@ -100,12 +83,6 @@ const PoseDetection = () => {
 
 
 
-
-
-
-
-
-
             <div className='TEST'>
                 <input type='file'
                     accept='image/*'
@@ -113,7 +90,7 @@ const PoseDetection = () => {
                         imageRef.current.src = URL.createObjectURL(e.target.files[0]);
                         imageRef.current.onload = async () => {
                             console.log("test");
-                            poseDetector.current.setVideoData(imageRef.current.width, imageRef.current.height)
+                            poseDetector.current.setVideoData(imageRef.current.width, imageRef.current.height, canvasRef)
                             const pose = await poseDetector.current.getPose(imageRef.current)
                             poseDetector.current.drawPoses(pose, imageRef.current);
                             poseDetector.current.drawSkeleton(pose);

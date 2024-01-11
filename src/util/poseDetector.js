@@ -6,11 +6,11 @@ import checkMountainYogaPose from './poses';
 
 
 export default class PoseDetector {
-    constructor(canvasRef) {
+    constructor() {
 
-        this.canvas = canvasRef.current;
+        this.canvas = null
         this.model = null;
-        this.ctx = this.canvas.getContext('2d');
+        this.ctx = null
 
         this.detectorConfig = {
             modelType: poseDetection.movenet.modelType.SINGLEPOSE_LIGHTNING,
@@ -57,9 +57,10 @@ export default class PoseDetector {
     }
 
 
-    setVideoData(videoWidth, videoHeight) {
-        // this.resetCanvas()
+    setVideoData(videoWidth, videoHeight, canvasRef) {
 
+        this.canvas = canvasRef.current;
+        this.ctx = this.canvas.getContext('2d');
         let { width, height } = this.scaleDimensions(videoWidth, videoHeight, 512);
 
         width = Math.floor(width);
