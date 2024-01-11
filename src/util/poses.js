@@ -57,7 +57,7 @@ const yogaPoses = {
 }
 
 // 'Downward Dog': {
-    // gives inaccurate pose
+// gives inaccurate pose
 // },
 // 'Warrior Pose': {
 
@@ -110,12 +110,13 @@ export default function checkYogaPose(keypoints, pose) {
 
 
 export function calculateAngleBetweenPairs(pose) {
-    let s = ""
+    let s = "{"
     const keypoints = pose[0].keypoints;
     for (const pair of angleBetweenPairs) {
         const [keypoint1, keypoint2] = pair.split('-');
         const angle = calculateAngle(keypoints[joints[keypoint1]], keypoints[joints[keypoint2]]);
-        s += `${pair}: ${angle}\n`
+        s += `"${pair}": ${angle},\n`
     }
+    s += "}"
     return s
 }
