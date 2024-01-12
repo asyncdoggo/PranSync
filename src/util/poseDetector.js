@@ -15,17 +15,38 @@ export default class PoseDetector {
         this.detectorConfig = {
             modelType: poseDetection.movenet.modelType.SINGLEPOSE_LIGHTNING,
             enableTracking: true,
-            trackerType: poseDetection.TrackerType.BoundingBox,
+            trackerType: poseDetection.TrackerType.Keypoint,
             minPoseScore: 0.5,
 
         };
+    }
 
-        this.estimationConfig = {
-            maxPoses: 1,
-            flipHorizontal: false,
-            scoreThreshold: 0.5,
-            nmsRadius: 20
-        };
+    setVideoData(videoWidth, videoHeight, canvasRef, canvasWidth) {
+
+        this.canvas = canvasRef.current;
+        this.ctx = this.canvas.getContext('2d');
+        let { width, height } = this.scaleDimensions(videoWidth, videoHeight, 512);
+
+        width = Math.floor(width);
+        height = Math.floor(height);
+
+        console.log("scaled dims:", width, height);
+
+        this.scaledWidth = width;
+        this.scaledHeight = height;
+
+        this.videoWidth = videoWidth;
+        this.videoHeight = videoHeight;
+
+
+        let { width: cw, height: ch } = this.scaleDimensions(videoWidth, videoHeight, canvasWidth)
+
+        this.canvas.width = Math.floor(cw);
+        this.canvas.height = Math.floor(ch);
+
+        this.canvas_scale_x = this.canvas.width / this.scaledWidth;
+        this.canvas_scale_y = this.canvas.height / this.scaledHeight;
+
     }
 
 
@@ -54,40 +75,6 @@ export default class PoseDetector {
     unloadModel() {
         this.model.dispose();
         this.model = null;
-    }
-
-
-    setVideoData(videoWidth, videoHeight, canvasRef) {
-
-        this.canvas = canvasRef.current;
-        this.ctx = this.canvas.getContext('2d');
-        let { width, height } = this.scaleDimensions(videoWidth, videoHeight, 512);
-
-        width = Math.floor(width);
-        height = Math.floor(height);
-
-        console.log("scaled dims:", width, height);
-
-        this.scaledWidth = width;
-        this.scaledHeight = height;
-
-        this.videoWidth = videoWidth;
-        this.videoHeight = videoHeight;
-
-        // this.canvas_scale = 2;
-
-        let { width: canvasWidth, height: canvasHeight } = this.scaleDimensions(videoWidth, videoHeight, this.scaledWidth)
-
-        canvasWidth = Math.floor(canvasWidth);
-        canvasHeight = Math.floor(canvasHeight);
-
-
-        this.canvas.width = canvasWidth;
-        this.canvas.height = canvasHeight;
-
-        this.canvas_scale_x = this.canvas.width / this.scaledWidth;
-        this.canvas_scale_y = this.canvas.height / this.scaledHeight;
-
     }
 
     resetCanvas() {

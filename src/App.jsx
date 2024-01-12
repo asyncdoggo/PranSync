@@ -9,6 +9,7 @@ import { useRef, useState } from 'react'
 import { useEffect } from 'react'
 import PoseDetector from './util/poseDetector'
 import { PoseDetectorContext } from './context/poseDetectorContext'
+import PoseGuide from './pages/PoseGuide'
 
 const Layout = () => {
   return (
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
       {
         path: "/pose",
         element: <PoseDetect />,
+      },
+      {
+        path: "/pose/:pose",
+        element: <PoseGuide />,
       }
     ],
   },
