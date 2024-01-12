@@ -3,7 +3,7 @@ import * as poseDetection from '@tensorflow-models/pose-detection';
 import * as tf from '@tensorflow/tfjs-core';
 import '@tensorflow/tfjs-backend-webgl';
 import PoseDetector from '../util/poseDetector';
-import checkYogaPose, { calculateAngleBetweenPairs } from '../util/poses';
+import checkYogaPose, { calculateAngleBetweenPairs, calculateAngleDifference } from '../util/poses';
 import { PoseDetectorContext } from '../context/poseDetectorContext';
 
 
@@ -42,7 +42,11 @@ const PoseDetection = () => {
                     if (video.paused || video.ended) return;
                     const poses = await poseDetector.current.getPose(video)
                     poseDetector.current.drawPoses(poses, video);
-                    poseDetector.current.drawSkeleton(poses);
+                    // poseDetector.current.drawSkeleton(poses);
+
+                    const anglesDiff = calculateAngleDifference(poses, "mountain")
+                    poseDetector.current.drawAngularSkeleton(poses, anglesDiff)
+
                     const pose = poses[0];
                     if (pose) {
                         const userpose = checkYogaPose(pose.keypoints, "mountain");

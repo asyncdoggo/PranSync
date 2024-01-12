@@ -2,11 +2,42 @@ import * as poseDetection from '@tensorflow-models/pose-detection';
 import * as tf from '@tensorflow/tfjs-core';
 import '@tensorflow/tfjs-backend-webgl';
 import '@tensorflow/tfjs-backend-webgpu'
-import checkMountainYogaPose from './poses';
+import { calculateAngle } from './poses';
 
 
 export default class PoseDetector {
     constructor() {
+        this.angleBetweenPairs =
+            [
+                'left_shoulder-left_elbow',
+                'left_elbow-left_wrist',
+                'right_shoulder-right_elbow',
+                'right_elbow-right_wrist',
+                "left_hip-left_knee",
+                "right_hip-right_knee",
+                "left_knee-left_ankle",
+                "right_knee-right_ankle"
+            ]
+
+        this.joints = {
+            "nose": "0",
+            "left_eye": "1",
+            "right_eye": "2",
+            "left_ear": "3",
+            "right_ear": "4",
+            "left_shoulder": "5",
+            "right_shoulder": "6",
+            "left_elbow": "7",
+            "right_elbow": "8",
+            "left_wrist": "9",
+            "right_wrist": "10",
+            "left_hip": "11",
+            "right_hip": "12",
+            "left_knee": "13",
+            "right_knee": "14",
+            "left_ankle": "15",
+            "right_ankle": "16"
+        }
 
         this.canvas = null
         this.model = null;
@@ -161,6 +192,66 @@ export default class PoseDetector {
                 this.ctx.lineTo(x2s, y2s);
                 this.ctx.strokeStyle = 'green'; // Adjust color as needed
                 this.ctx.lineWidth = 2; // Adjust line width as needed
+                this.ctx.stroke();
+            }
+        }
+    }
+
+
+
+
+    drawAngularSkeleton(pose, anglesDiff) {
+        if (!pose || pose.length === 0) return;
+
+        const keypoints = pose[0].keypoints;
+
+        const connections = [
+            [5, 7], // Left shoulder to left elbow
+            [7, 9], // Left elbow to left wrist
+            [6, 8], // Right shoulder to right elbow
+            [8, 10], // Right elbow to right wrist
+            [5, 6], // Left shoulder to right shoulder
+            [11, 12], // Left hip to right hip
+            [5, 11], // Left shoulder to left hip
+            [6, 12], // Right shoulder to right hip
+            [11, 13], // Left hip to left knee
+            [13, 15], // Left knee to left ankle
+            [12, 14], // Right hip to right knee
+            [14, 16], // Right knee to right ankle
+        ];
+
+        for (const connection of connections) {
+            const keypoint1 = keypoints[connection[0]];
+            const keypoint2 = keypoints[connection[1]];
+
+
+            let color = 'green';
+
+            if (anglesDiff) {
+                const diff = anglesDiff[`${connection[0]},${connection[1]}`];
+                if (diff) {
+                    if (Math.abs(diff) > 10) {
+                        color = 'red'
+                    }
+                }
+            }
+
+
+            if (keypoint1.score > 0.5 && keypoint2.score > 0.5) {
+                const x1 = keypoint1.x
+                const y1 = keypoint1.y
+                const x2 = keypoint2.x
+                const y2 = keypoint2.y
+
+                const { x: x1s, y: y1s } = this.scaleCoordinates(x1, y1);
+                const { x: x2s, y: y2s } = this.scaleCoordinates(x2, y2);
+
+
+                this.ctx.beginPath();
+                this.ctx.moveTo(x1s, y1s);
+                this.ctx.lineTo(x2s, y2s);
+                this.ctx.strokeStyle = color
+                this.ctx.lineWidth = 2;
                 this.ctx.stroke();
             }
         }

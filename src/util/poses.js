@@ -53,7 +53,7 @@ const yogaPoses = {
         "right_hip-right_knee": -11.194360319262103,
         "left_knee-left_ankle": 165.70182735248983,
         "right_knee-right_ankle": 104.44616203546497,
-    }, 
+    },
     'forward fold': {
         "left_shoulder-left_elbow": 80.99468415614923,
         "left_elbow-left_wrist": 91.71667490982325,
@@ -63,7 +63,7 @@ const yogaPoses = {
         "right_hip-right_knee": 82.25783578578272,
         "left_knee-left_ankle": 92.1457243416118,
         "right_knee-right_ankle": 83.39897490494849,
-    }, 
+    },
     'triangle pose': {
         "left_shoulder-left_elbow": 80.62974461414443,
         "left_elbow-left_wrist": 62.58738270953999,
@@ -73,7 +73,7 @@ const yogaPoses = {
         "right_hip-right_knee": 118.24097308752138,
         "left_knee-left_ankle": 57.74971886029495,
         "right_knee-right_ankle": 113.52880934566475,
-    }, 
+    },
     'tree-pose': {
         "left_shoulder-left_elbow": -94.77946584514672,
         "left_elbow-left_wrist": -105.21574323964435,
@@ -113,7 +113,7 @@ const yogaPoses = {
         "right_hip-right_knee": 118.2409916297057,
         "left_knee-left_ankle": 57.749693724095096,
         "right_knee-right_ankle": 113.52877381544809,
-    }, 
+    },
     'cresent-lunge': {
         "left_shoulder-left_elbow": -90.52616314287081,
         "left_elbow-left_wrist": -92.80271046741768,
@@ -123,7 +123,7 @@ const yogaPoses = {
         "right_hip-right_knee": 177.83097334635562,
         "left_knee-left_ankle": -42.616165388508485,
         "right_knee-right_ankle": 93.762694757014,
-    }, 
+    },
     'dancer-pose': {
         "left_shoulder-left_elbow": 16.46349483186454,
         "left_elbow-left_wrist": 17.907654139092855,
@@ -133,7 +133,7 @@ const yogaPoses = {
         "right_hip-right_knee": -137.01815209673276,
         "left_knee-left_ankle": 85.19743044521314,
         "right_knee-right_ankle": 81.18849471656495,
-    }, 
+    },
     'chair-pose': {
         "left_shoulder-left_elbow": -101.20962374912462,
         "left_elbow-left_wrist": -96.75757667294315,
@@ -143,7 +143,7 @@ const yogaPoses = {
         "right_hip-right_knee": 137.63416185747886,
         "left_knee-left_ankle": 67.17287091549557,
         "right_knee-right_ankle": 67.23206453321264,
-    }, 
+    },
 }
 
 // 'Downward Dog': {
@@ -171,7 +171,7 @@ const yogaPoses = {
 
 
 // Calculate the angle between two keypoints in degrees
-function calculateAngle(keypoint1, keypoint2) {
+export function calculateAngle(keypoint1, keypoint2) {
     return Math.atan2(keypoint2.y - keypoint1.y, keypoint2.x - keypoint1.x) * 180 / Math.PI;
 }
 
@@ -200,13 +200,28 @@ export default function checkYogaPose(keypoints, pose) {
 
 
 export function calculateAngleBetweenPairs(pose) {
-    let s = "{"
+    let s = {}
     const keypoints = pose[0].keypoints;
     for (const pair of angleBetweenPairs) {
         const [keypoint1, keypoint2] = pair.split('-');
         const angle = calculateAngle(keypoints[joints[keypoint1]], keypoints[joints[keypoint2]]);
-        s += `"${pair}": ${angle},\n`
+        s[pair] = angle
     }
-    s += "}"
     return s
+}
+
+
+
+export function calculateAngleDifference(poses, pose_name) {
+    if (!poses || poses.length === 0) return {}
+    const angles1 = calculateAngleBetweenPairs(poses)
+    const angles2 = yogaPoses[pose_name]
+
+    let diff = {}
+    for (const pair in angles1) {
+        const pair_split = pair.split('-')
+        const joint_pair = [joints[pair_split[0]], joints[pair_split[1]]]
+        diff[joint_pair] = angles1[pair] - angles2[pair]
+    }
+    return diff
 }

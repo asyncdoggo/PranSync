@@ -1,14 +1,13 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom"
 import { PoseDetectorContext } from "../context/poseDetectorContext";
+import { calculateAngleBetweenPairs, calculateAngleDifference } from "../util/poses";
 
 export default function PoseGuide() {
     const { poseDetector, loaded } = useContext(PoseDetectorContext);
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
     const param = useParams()
-    const [canvasloaded, setCanvasLoaded] = useState(false);
-
 
 
     const constraints = {
@@ -20,13 +19,6 @@ export default function PoseGuide() {
                 : true
     }
 
-    const videoChange = (e) => {
-        // setVideo(e.target.files[0]);
-        videoRef.current.src = URL.createObjectURL(e.target.files[0]);
-        detectPoseFromVideo(videoRef.current);
-    }
-
-
     const videoLoad = async () => {
         onResize()
         console.log("video width:", video.videoWidth, "video height:", video.videoHeight);
@@ -36,7 +28,10 @@ export default function PoseGuide() {
                 if (video.paused || video.ended) return;
                 const poses = await poseDetector.current.getPose(video)
                 poseDetector.current.drawPoses(poses, video);
-                poseDetector.current.drawSkeleton(poses);
+                // poseDetector.current.drawSkeleton(poses);
+
+                const anglesDiff = calculateAngleDifference(poses, param.pose)
+                poseDetector.current.drawAngularSkeleton(poses, anglesDiff)
                 const pose = poses[0];
                 if (pose) {
                     // const userpose = checkYogaPose(pose.keypoints, "mountain");
