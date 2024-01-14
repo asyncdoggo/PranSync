@@ -1,4 +1,4 @@
-import PoseDetect from './pages/PoseDetect'
+import PoseDetect from './pages/Test'
 import { Outlet, RouterProvider, createBrowserRouter } from 'react-router-dom'
 import Header from './components/header'
 import Footer from './components/footer'
