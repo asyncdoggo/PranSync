@@ -16,9 +16,10 @@ import dancerpose from "../assets/dancerpose.png";
 export default function Poses() {
     const yogaPoses = [
         {
-            pose: "Mountain",
+            pose: "Mountain (Tadasana)",
             description: "The foundation of all standing poses, Mountain Pose makes a great a starting position, resting pose, or tool to improve posture.",
-            image: mountain_image
+            image: mountain_image,
+            
         },
         {
             pose: "Tree",
