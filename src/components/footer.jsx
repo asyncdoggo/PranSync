@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export default function Footer() {
     return (
         // <footer
@@ -18,10 +20,10 @@ export default function Footer() {
         //     </div>
         // </footer> 
 
-        <footer className='flex flex-col items-center justify-center bg-green-500 text-white p-6'>
+        <footer className='flex flex-col items-center mt-auto justify-center bg-green-500 text-white p-6'>
             <div className='mb-2'>
-                <a href='/privacy' className='mr-4 hover:text-green-200 transition-colors duration-300'>Privacy Policy</a>
-                <a href='/terms' className='hover:text-green-200 transition-colors duration-300'>Terms of Service</a>
+                <Link to='/privacy' className='mr-4 hover:text-green-200 transition-colors duration-300'>Privacy Policy</Link>
+                <Link to='/terms' className='hover:text-green-200 transition-colors duration-300'>Terms of Service</Link>
             </div>
             <div>
                 © 2024 PranaSync. All rights reserved.

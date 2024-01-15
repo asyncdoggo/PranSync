@@ -1,6 +1,8 @@
 // import React from 'react';
 import Features from '../components/features.jsx';
 import ComingSoon from '../components/comingSoon.jsx'; 
+import prana1 from '../assets/prana-1.png'
+
 
 export default function Landing() {
 
@@ -35,7 +37,7 @@ export default function Landing() {
 
                 
                 <div className='w-1/2'>
-                    <img src='/prana-1.png' alt='Yoga' className='h-full w-full object-cover'/>
+                    <img src={prana1} alt='Yoga' className='h-full w-full object-cover'/>
                 </div>
 
             </div> 

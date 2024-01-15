@@ -1,5 +1,7 @@
 // ComingSoon.jsx
 // import React from 'react';
+import appimage from '../assets/app.svg'
+
 
 export default function ComingSoon() {
     return (
@@ -22,7 +24,7 @@ export default function ComingSoon() {
                     </div>
                 </div>
 
-                <img src="/app.svg" alt="App Illustration Image" style={{width: '80%', height: '80%'}}/> 
+                <img src={appimage} alt="App Illustration Image" style={{width: '80%', height: '80%'}}/> 
         </div>
     );
 }
