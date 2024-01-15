@@ -1,4 +1,3 @@
-import PoseDetect from './pages/Test'
 import { Outlet, RouterProvider, createBrowserRouter } from 'react-router-dom'
 import Header from './components/header'
 import Footer from './components/footer'
@@ -10,6 +9,8 @@ import { useEffect } from 'react'
 import PoseDetector from './util/poseDetector'
 import { PoseDetectorContext } from './context/poseDetectorContext'
 import PoseGuide from './pages/PoseGuide'
+import Poses from './pages/Poses'
+import PoseDetection from './pages/Test'
 
 const Layout = () => {
   return (
@@ -32,11 +33,15 @@ const router = createBrowserRouter([
       },
       {
         path: "/pose",
-        element: <PoseDetect />,
+        element: <Poses />,
       },
       {
         path: "/pose/:pose",
         element: <PoseGuide />,
+      },
+      {
+        path: "/test",
+        element: <PoseDetection />,
       }
     ],
   },
