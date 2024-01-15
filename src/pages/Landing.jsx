@@ -1,5 +1,6 @@
 // import React from 'react';
 import Features from '../components/features.jsx';
+import ComingSoon from '../components/comingSoon.jsx'; 
 
 export default function Landing() {
 
@@ -44,6 +45,10 @@ export default function Landing() {
                 <Features/>
             </div>
 
+            <div> 
+
+                <ComingSoon/>
+            </div>
         </>
         
     )
