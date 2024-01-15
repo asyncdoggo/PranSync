@@ -1,8 +1,5 @@
-import React, { useRef, useEffect, useState, createContext, useContext } from 'react';
-import * as poseDetection from '@tensorflow-models/pose-detection';
-import * as tf from '@tensorflow/tfjs-core';
+import { useRef, useState, useContext } from 'react';
 import '@tensorflow/tfjs-backend-webgl';
-import PoseDetector from '../util/poseDetector';
 import checkYogaPose, { calculateAngleBetweenPairs, calculateAngleDifference } from '../util/poses';
 import { PoseDetectorContext } from '../context/poseDetectorContext';
 
@@ -110,12 +107,6 @@ const PoseDetection = () => {
                 />
                 <img src='' width="480" height="320" ref={imageRef} />
             </div>
-
-
-
-
-
-
         </div>
 
     );

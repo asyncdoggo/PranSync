@@ -146,30 +146,6 @@ const yogaPoses = {
     },
 }
 
-// 'Downward Dog': {
-// gives inaccurate pose
-// },
-// 'Warrior Pose': {
-
-// },
-// 'Child\'s Pose': {
-
-// },
-// 'Cobra Pose': {
-
-// },
-// 'Bridge Pose': {
-
-// },
-// 'Chair Pose': {
-
-// },
-// 'Plank Pose': {
-
-// },
-// Add more poses as needed
-
-
 // Calculate the angle between two keypoints in degrees
 export function calculateAngle(keypoint1, keypoint2) {
     return Math.atan2(keypoint2.y - keypoint1.y, keypoint2.x - keypoint1.x) * 180 / Math.PI;
@@ -180,7 +156,7 @@ export function calculateAngle(keypoint1, keypoint2) {
 //     return Math.sqrt(Math.pow(keypoint2.x - keypoint1.x, 2) + Math.pow(keypoint2.y - keypoint1.y, 2));
 // }
 
-// Check if the detected pose matches a yoga pose
+
 export default function checkYogaPose(keypoints, pose) {
 
     let isMatch = true;

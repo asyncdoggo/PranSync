@@ -1,7 +1,7 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom"
 import { PoseDetectorContext } from "../context/poseDetectorContext";
-import { calculateAngleBetweenPairs, calculateAngleDifference } from "../util/poses";
+import { calculateAngleDifference } from "../util/poses";
 
 export default function PoseGuide() {
     const { poseDetector, loaded } = useContext(PoseDetectorContext);
@@ -59,11 +59,21 @@ export default function PoseGuide() {
 
 
     async function startCamera() {
-        videoUnload()
-        const video = videoRef.current;
-        const stream = await navigator.mediaDevices.getUserMedia(constraints);
-        video.srcObject = stream;
-        video.addEventListener('loadeddata', videoLoad);
+        try{
+
+            videoUnload()
+            const video = videoRef.current;
+            const stream = await navigator.mediaDevices.getUserMedia(constraints);
+            video.srcObject = stream;
+            video.addEventListener('loadeddata', videoLoad);
+        }
+        catch(e){
+            canvasRef.current.width = window.innerWidth
+            canvasRef.current.getContext('2d').clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+            canvasRef.current.getContext('2d').font = "30px Arial";
+            canvasRef.current.getContext('2d').fillStyle = "red";
+            canvasRef.current.getContext('2d').fillText("Camera device not found or blocked", 10, 50);
+        }
     }
 
     async function videoUnload() {
