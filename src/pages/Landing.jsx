@@ -1,6 +1,8 @@
 // import React from 'react';
+import { Link } from 'react-router-dom';
 import Features from '../components/features.jsx';
 import ComingSoon from '../components/comingSoon.jsx'; 
+import AllPoses from './AllPoses';
 
 export default function Landing() {
 
