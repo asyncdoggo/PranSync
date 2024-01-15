@@ -47,7 +47,7 @@ export default class PoseDetector {
             modelType: poseDetection.movenet.modelType.SINGLEPOSE_LIGHTNING,
             enableTracking: true,
             trackerType: poseDetection.TrackerType.Keypoint,
-            minPoseScore: 0.5,
+            minPoseScore: 0.4,
 
         };
     }
@@ -145,7 +145,7 @@ export default class PoseDetector {
 
                 // Draw a circle for each keypoint
                 this.ctx.beginPath();
-                this.ctx.arc(x1, y1, 5, 0, 2 * Math.PI);
+                this.ctx.arc(x1, y1, 4, 0, 2 * Math.PI);
                 this.ctx.fillStyle = 'red'; // Adjust color as needed
                 this.ctx.fill();
             }
@@ -191,7 +191,7 @@ export default class PoseDetector {
                 this.ctx.moveTo(x1s, y1s);
                 this.ctx.lineTo(x2s, y2s);
                 this.ctx.strokeStyle = 'green'; // Adjust color as needed
-                this.ctx.lineWidth = 2; // Adjust line width as needed
+                this.ctx.lineWidth = 5; // Adjust line width as needed
                 this.ctx.stroke();
             }
         }

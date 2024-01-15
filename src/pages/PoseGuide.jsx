@@ -11,6 +11,7 @@ export default function PoseGuide() {
     const param = useParams()
     const [isVideo, setIsVideo] = useState(null);
     const [progress, setProgress] = useState(0);
+    const vidLoop = useRef(null)
 
     const constraints = {
         video:
@@ -40,7 +41,7 @@ export default function PoseGuide() {
         console.log("video width:", videoRef.current.videoWidth, "video height:", videoRef.current.videoHeight);
         if (videoRef.current.readyState >= 3) {
 
-            setInterval(async () => {
+            const interval = setInterval(async () => {
                 if (videoRef.current.paused || videoRef.current.ended) return;
                 const poses = await poseDetector.current.getPose(videoRef.current)
                 poseDetector.current.drawPoses(poses, videoRef.current);
@@ -54,12 +55,13 @@ export default function PoseGuide() {
                     // console.log(userpose)
                 }
             }, 40);
+            vidLoop.current = interval
         }
     }
 
 
     async function startCamera() {
-        try{
+        try {
 
             videoUnload()
             const video = videoRef.current;
@@ -67,7 +69,7 @@ export default function PoseGuide() {
             video.srcObject = stream;
             video.addEventListener('loadeddata', videoLoad);
         }
-        catch(e){
+        catch (e) {
             canvasRef.current.width = window.innerWidth
             canvasRef.current.getContext('2d').clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
             canvasRef.current.getContext('2d').font = "30px Arial";
@@ -133,12 +135,13 @@ export default function PoseGuide() {
     useEffect(() => {
         window.addEventListener('beforeunload', videoUnload)
         window.addEventListener('resize', onResize)
-
         return () => {
             window.removeEventListener('beforeunload', videoUnload)
             window.removeEventListener('resize', onResize)
+            clearInterval(vidLoop.current)
         }
     }, [])
+
 
 
 
@@ -177,9 +180,10 @@ export default function PoseGuide() {
                                 </> : <></>
                             }
                         </div>
-
-
                         <video id="video" ref={videoRef} width="300px" autoPlay muted playsInline className="invisible fixed -z-10"></video>
+                        <div className="flex justify-center w-full">
+                            <img src={`/src/assets/${param.pose}.png`} className="lg:w-[30%] w-[80%]"></img>
+                        </div>
                     </div >
                 </> : <h1>Loading...</h1>
             }
