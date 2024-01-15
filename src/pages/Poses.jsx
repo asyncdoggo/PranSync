@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom"
-import mountain from "../assets/mountain.png";
+import mountain_image from "../assets/mountain.png";
 
 export default function Poses() {
     const yogaPoses = [
         {
             pose: "mountain",
             description: "The foundation of all standing poses, Mountain Pose makes a great a starting position, resting pose, or tool to improve posture.",
-            image: "mountain.png"
+            image: mountain_image
         },
         {
             pose: "tree",
