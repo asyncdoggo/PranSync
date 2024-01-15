@@ -1,17 +1,17 @@
 import { Link } from "react-router-dom"
 import mountain_image from "../assets/mountain.png";
-import tree_image from "../assets/tree.png";
-import warrior1 from "../assets/warrior1.png";
-import warrior2 from "../assets/warrior2.png";
+import tree_image from "../assets/tree.svg";
+import warrior1 from "../assets/warrior1.svg";
+import warrior2 from "../assets/warrior2.svg";
 import warrior3 from "../assets/warrior3.png";
-import triangle from "../assets/triangle.png";
-import halfmoon from "../assets/halfmoon.png";
-import chair from "../assets/chair.png";
-import forwardfold from "../assets/forwardfold.png";
-import downwardDog from "../assets/downwardDog.png";
-import triangleTwist from "../assets/triangleTwist.png";
-import crescentlunge from "../assets/crescentlunge.png";
-import dancerpose from "../assets/dancerpose.png";
+import triangle from "../assets/triangle.svg";
+import halfmoon from "../assets/halfmoon.svg";
+import chair from "../assets/chair.svg";
+import forwardfold from "../assets/forwardfold.svg";
+import downwardDog from "../assets/downwardDog.svg";
+import triangleTwist from "../assets/triangleTwist.svg";
+import crescentlunge from "../assets/crescentLunge.svg";
+import dancerpose from "../assets/dancerPose.svg";
 
 export default function Poses() {
     const yogaPoses = [
