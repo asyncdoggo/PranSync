@@ -28,10 +28,14 @@ export default function Landing() {
                         <div className='flex w-full justify-center items-center'>
                             <div className='w-1/2'>
                                 <div className='mt-8'>
-                                    <button className='px-4 py-2 bg-white text-green-500 rounded-full font-bold text-xl hover:bg-green-200 transition-colors duration-300'>Get Started</button>
+                                    <Link to = '/pose'>
+                                        <button className='px-4 py-2 bg-white text-green-500 rounded-full font-bold text-xl hover:bg-green-200 transition-colors duration-300'>Get Started</button>
+                                    </Link>
                                 </div>
                                 <div className='mt-4'>
-                                    <button className='px-4 py-2 bg-white text-green-500 rounded-full font-bold text-xl hover:bg-green-200 transition-colors duration-300'>Pre-register for Mobile App</button>
+                                    <Link to = '#coming-soon'>
+                                        <button className='px-4 py-2 bg-white text-green-500 rounded-full font-bold text-xl hover:bg-green-200 transition-colors duration-300'>Pre-register for Mobile App</button>
+                                    </Link>
                                 </div>
                             </div>
                             <div className='w-1/2 flex justify-end md:justify-center'>
@@ -50,10 +54,12 @@ export default function Landing() {
             </div>
 
             <div>
-
-                <ComingSoon />
+                <div id="#coming-soon">
+                    <ComingSoon /> 
+                </div> 
             </div>
         </>
 
     )
-}
+} 
+

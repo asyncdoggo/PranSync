@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom"
+import mountain from "../assets/mountain.png";
 
 export default function Poses() {
     const yogaPoses = [
@@ -53,25 +54,26 @@ export default function Poses() {
             image: "downwarddog.png"
         },
         {
-            pose: "upward dog",
-            description: "Upward-Facing Dog stretches the chest and lungs, shoulders and abdomen. It firms the buttocks, stimulates abdominal organs, and helps relieve mild depression, fatigue, and sciatica.",
-            image: "upwarddog.png"
-        },
+            pose: "Traingle Twist",
+            description: "Triangle Twist Pose is a standing yoga pose that tones the legs, reduces stress, and increases stability and balance.",
+            image: "trianglepose.png"
+        }, 
         {
-            pose: "plank",
-            description: "Plank Pose strengthens the arms, wrists, and spine, and is known to be one of the best poses for core conditioning.",
-            image: "plank.png"
-        },
+            pose: "Crescent Lunge",
+            description: "Crescent Lunge strengthens and stretches the legs, hips, and thighs, while opening the chest, shoulders, and arms.",
+            image: "crescentlunge.png"
+        }, 
         {
-            pose: "cobra",
-            description: "Cobra Pose stretches the muscles in the shoulders, chest and abdominals. It also strengthens the arms and shoulders, and improves menstrual irregularities.",
-            image: "cobra.png"
-        },
+            pose: "Dancer Pose",
+            description: "Dancer Pose stretches the shoulders, chest, thighs, groins, and abdomen. It strengthens the legs and ankles, improves balance, and adds grace and poise to your practice.",
+            image: "dancerpose.png"
+        }, 
         {
-            pose: "child's pose",
-            description: "Child's Pose gently stretches the hips, thighs, and ankles.",
-            image: "childs.png"
-        }
+            pose: "Chair Pose", 
+            description: "Chair Pose clearly works the muscles of the arms and legs, but it also stimulates the diaphragm and heart.",
+            image: "chairpose.png"
+        }, 
+        
     ]
     
     
