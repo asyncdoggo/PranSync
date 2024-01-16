@@ -97,7 +97,6 @@ export default function Poses() {
 
     ]
 
-
     return (
         <>
             <h1>Poses</h1>

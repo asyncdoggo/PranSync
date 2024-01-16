@@ -1,3 +1,18 @@
+import mountain_image from "../assets/mountain.png";
+import tree_image from "../assets/tree.svg";
+import warrior1 from "../assets/warrior1.svg";
+import warrior2 from "../assets/warrior2.svg";
+import warrior3 from "../assets/warrior3.png";
+import triangle from "../assets/triangle.svg";
+import halfmoon from "../assets/halfmoon.svg";
+import chair from "../assets/chair.svg";
+import forwardfold from "../assets/forwardfold.svg";
+import downwardDog from "../assets/downwardDog.svg";
+import triangleTwist from "../assets/triangleTwist.svg";
+import crescentlunge from "../assets/crescentLunge.svg";
+import dancerpose from "../assets/dancerPose.svg";
+
+
 const joints = {
     "nose": "0",
     "left_eye": "1",
@@ -42,7 +57,6 @@ const yogaPoses = {
         'right_hip-right_knee': 90,
         'left_knee-left_ankle': 95,
         'right_knee-right_ankle': 90
-
     },
     "tree": {
         "left_shoulder-left_elbow": -103.72909823424804,
@@ -165,6 +179,23 @@ const yogaPoses = {
         "right_knee-right_ankle": -62.802339067430495
     }
 }
+
+export const images = {
+    mountain: mountain_image,
+    tree: tree_image,
+    warrior1: warrior1,
+    warrior2: warrior2,
+    warrior3: warrior3,
+    triangle: triangle,
+    halfmoon: halfmoon,
+    chair: chair,
+    forwardfold: forwardfold,
+    downwardDog: downwardDog,
+    triangleTwist: triangleTwist,
+    crescentlunge: crescentlunge,
+    dancerpose: dancerpose
+}
+
 
 // Calculate the angle between two keypoints in degrees
 export function calculateAngle(keypoint1, keypoint2) {

@@ -1,8 +1,7 @@
 import * as poseDetection from '@tensorflow-models/pose-detection';
 import * as tf from '@tensorflow/tfjs-core';
 import '@tensorflow/tfjs-backend-webgl';
-import '@tensorflow/tfjs-backend-webgpu'
-import { calculateAngle } from './poses';
+import '@tensorflow/tfjs-backend-webgpu';
 
 
 export default class PoseDetector {

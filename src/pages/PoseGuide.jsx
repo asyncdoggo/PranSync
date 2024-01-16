@@ -2,6 +2,8 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom"
 import { PoseDetectorContext } from "../context/poseDetectorContext";
 import { calculateAngleDifference } from "../util/poses";
+import { images } from "../util/poses";
+
 
 export default function PoseGuide() {
     const { poseDetector, loaded } = useContext(PoseDetectorContext);
@@ -182,7 +184,7 @@ export default function PoseGuide() {
                         </div>
                         <video id="video" ref={videoRef} width="300px" autoPlay muted playsInline className="invisible fixed -z-10"></video>
                         <div className="flex justify-center w-full">
-                            <img src={`/src/assets/${param.pose}.png`} className="lg:w-[30%] w-[80%]"></img>
+                            <img src={images[param.pose]} className="lg:w-[30%] w-[80%]"></img>
                         </div>
                     </div >
                 </> : <h1>Loading...</h1>
